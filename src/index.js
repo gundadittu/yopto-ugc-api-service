@@ -1,6 +1,6 @@
 const express = require('express');
 const apiClient = require('./yotpo-api/apiClient'); 
-const child_process = require('child_process'); 
+// const child_process = require('child_process'); 
 require("babel-register");
 require("babel-polyfill");
 require("dotenv").config(); 
@@ -50,13 +50,13 @@ app.get('/get-all-yotpo-reviews', async function(req, res, next){
       // TODO: test below line
 
       // User Heroku CLI to save access token as env variable
-      const cmd = "heroku config:set ACCESS_TOKEN=" + accessToken;
-      child_process.exec(cmd); 
+      // const cmd = "heroku config:set ACCESS_TOKEN=" + accessToken;
+      // child_process.exec(cmd); 
       
-      // Use Heroku CLI to save time when access token was created as env variable
-      accessTokenCreatedAt = Math.floor(new Date().getTime() / 1000); 
-      const cmd2 = "heroku config:set ACCESS_TOKEN_CREATED_AT=" + accessTokenCreatedAt;
-      child_process.exec(cmd2); 
+      // // Use Heroku CLI to save time when access token was created as env variable
+      // accessTokenCreatedAt = Math.floor(new Date().getTime() / 1000); 
+      // const cmd2 = "heroku config:set ACCESS_TOKEN_CREATED_AT=" + accessTokenCreatedAt;
+      // child_process.exec(cmd2); 
     }
 
     const data = await apiClient.fetchAllReviews(API_KEY, accessToken, {}); 
