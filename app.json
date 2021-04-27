@@ -1,5 +1,8 @@
 {
   "name": "RealReviews - Yotpo UGC API Service",
-  "description": "Heroku app to access merchant's Yotpo data.",
-  "repository": "https://github.com/gundadittu/yopto-ugc-api-service",
+  "description": "Deployed on-premise to access merchant's Yotpo data.",
+  "repository": "https://github.com/heroku/node-js-getting-started",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
 }
