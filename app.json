@@ -4,7 +4,13 @@
   "repository": "https://github.com/heroku/node-js-getting-started",
   "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
   "keywords": ["node", "express", "heroku"],
-  "image": "heroku/nodejs", 
+  "image": "heroku/nodejs",
+   "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
   "env": {
     "API_KEY": {
       "description": "Enter your Yotpo app key. More details on finding this are here: https://support.yotpo.com/en/article/finding-your-yotpo-app-key-and-api-secret",
