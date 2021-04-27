@@ -21,6 +21,7 @@ export async function fetchAccessToken(
     return access_token; 
 }
 
+// TODO: add pagination
 export async function fetchAllReviews(
     apiKey, 
     accessToken, 

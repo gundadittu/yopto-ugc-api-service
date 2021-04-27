@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "build": "babel ./src --out-dir dist",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/index.js",
+    "start-heroku": "node --optimize_for_size --max_old_space_size=460 --gc_interval=100 ./dist/index.js"
   },
   "babel": {
     "presets": [

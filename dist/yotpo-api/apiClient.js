@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchAllReviews = fetchAllReviews;
 exports.fetchAccessToken = fetchAccessToken;
+exports.fetchAllReviews = fetchAllReviews;
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -14,59 +14,27 @@ var axios = require('axios');
 
 var yotpoHelpers = require('./helper');
 
-function fetchAllReviews(_x, _x2) {
-  return _fetchAllReviews.apply(this, arguments);
-}
-
-function _fetchAllReviews() {
-  _fetchAllReviews = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(apiKey, accessToken) {
-    var optionalSearchParams,
-        url,
-        res,
-        _args = arguments;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            optionalSearchParams = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-            url = yotpoHelpers.constructRetrieveAllReviewsUrl(apiKey, accessToken, optionalSearchParams);
-            _context.next = 4;
-            return axios.get(url);
-
-          case 4:
-            res = _context.sent;
-            return _context.abrupt("return", res["data"]);
-
-          case 6:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _fetchAllReviews.apply(this, arguments);
-}
-
-function fetchAccessToken(_x3, _x4) {
+function fetchAccessToken(_x, _x2) {
   return _fetchAccessToken.apply(this, arguments);
-}
+} // TODO: add pagination
+
 
 function _fetchAccessToken() {
-  _fetchAccessToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(apiKey, apiSecret) {
+  _fetchAccessToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(apiKey, apiSecret) {
     var grantType,
         url,
         res,
         data,
         access_token,
         token_type,
-        _args2 = arguments;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        _args = arguments;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context.prev = _context.next) {
           case 0:
-            grantType = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : "client_credentials";
+            grantType = _args.length > 2 && _args[2] !== undefined ? _args[2] : "client_credentials";
             url = 'https://api.yotpo.com/oauth/token';
-            _context2.next = 4;
+            _context.next = 4;
             return axios.get(url, {
               params: {
                 "client_id": apiKey,
@@ -76,19 +44,74 @@ function _fetchAccessToken() {
             });
 
           case 4:
-            res = _context2.sent;
+            res = _context.sent;
             data = res["data"];
             access_token = data ? data["access_token"] : null;
             token_type = data ? data["token_type"] : null; // TODO: throw error if access_token and token_type is null
 
-            return _context2.abrupt("return", access_token);
+            return _context.abrupt("return", access_token);
 
           case 9:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _fetchAccessToken.apply(this, arguments);
+}
+
+function fetchAllReviews(_x3, _x4) {
+  return _fetchAllReviews.apply(this, arguments);
+} // {
+//     "reviews": [
+//       {
+//         "id": 248989899,
+//         "title": "test review 1",
+//         "content": "test review",
+//         "score": 4,
+//         "votes_up": 0,
+//         "votes_down": 0,
+//         "created_at": "2021-04-22T02:18:31.000Z",
+//         "updated_at": "2021-04-22T02:53:35.000Z",
+//         "sentiment": 0.589802,
+//         "sku": "6640762945709",
+//         "name": "dittu",
+//         "email": "dittukg@gmail.com",
+//         "reviewer_type": "verified_reviewer",
+//         "deleted": false,
+//         "archived": false,
+//         "escalated": false
+//       },
+//     ]
+// }
+
+
+function _fetchAllReviews() {
+  _fetchAllReviews = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(apiKey, accessToken) {
+    var optionalSearchParams,
+        url,
+        res,
+        _args2 = arguments;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            optionalSearchParams = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : {};
+            url = yotpoHelpers.constructRetrieveAllReviewsUrl(apiKey, accessToken, optionalSearchParams);
+            _context2.next = 4;
+            return axios.get(url);
+
+          case 4:
+            res = _context2.sent;
+            return _context2.abrupt("return", res["data"]);
+
+          case 6:
           case "end":
             return _context2.stop();
         }
       }
     }, _callee2);
   }));
-  return _fetchAccessToken.apply(this, arguments);
+  return _fetchAllReviews.apply(this, arguments);
 }

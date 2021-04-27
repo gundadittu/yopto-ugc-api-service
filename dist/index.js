@@ -8,6 +8,8 @@ var express = require('express');
 
 var apiClient = require('./yotpo-api/apiClient');
 
+var child_process = require('child_process');
+
 require("babel-register");
 
 require("babel-polyfill");
@@ -19,11 +21,14 @@ var PORT = process.env.PORT || 5000;
 var API_KEY = process.env.API_KEY;
 var API_SECRET = process.env.API_SECRET;
 var ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+var ACCESS_TOKEN_CREATED_AT = process.env.ACCESS_TOKEN_CREATED_AT;
 var app = express(); // app.use(express.static(path.join(__dirname, 'public'))); 
 // TODO: add logging + send logs over to destination we can access
-// TODO: handle heroku timeout errors
-// TODO: handle heroku errors where free tier quota is exceeded
+// TODO: handle heroku timeout/memory exceeded errors
+// TODO: handle heroku errors where free tier quota is exceeded 
+// - https://devcenter.heroku.com/articles/free-dyno-hours#determining-your-free-dyno-hours
 // TODO: yotpo handle rate limiting errors
+// TODO: handle yotpo access token expired error 
 // TODO: create ping endpoint that tests all necessary setup, env variables, and dependencies
 
 app.use('/', function (_1, _2, next) {
@@ -39,47 +44,58 @@ app.use('/', function (_1, _2, next) {
 });
 app.get('/get-all-yotpo-reviews', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res, next) {
-    var accessToken, data;
+    var accessToken, accessTokenCreatedAt, two_weeks_ago_utc_ms, accessTokenExpired, cmd, cmd2, data;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
             accessToken = ACCESS_TOKEN;
+            accessTokenCreatedAt = ACCESS_TOKEN_CREATED_AT; // Check if access token has expired (older than 14 days)
 
-            if (!(ACCESS_TOKEN == null)) {
-              _context.next = 7;
+            two_weeks_ago_utc_ms = Math.floor(new Date(new Date().getTime() - 14 * 24 * 60 * 60 * 1000).getTime() / 100);
+            accessTokenExpired = accessTokenCreatedAt ? two_weeks_ago_utc_ms >= accessTokenCreatedAt : true; // Create access token if invalid
+
+            if (!(ACCESS_TOKEN == null || accessTokenExpired == true)) {
+              _context.next = 14;
               break;
             }
 
-            _context.next = 5;
+            _context.next = 8;
             return apiClient.fetchAccessToken(API_KEY, API_SECRET);
 
-          case 5:
+          case 8:
             accessToken = _context.sent;
-            process.env['ACCESS_TOKEN'] = accessToken;
+            // TODO: test below line
+            // User Heroku CLI to save access token as env variable
+            cmd = "heroku config:set ACCESS_TOKEN=" + accessToken;
+            child_process.exec(cmd); // Use Heroku CLI to save time when access token was created as env variable
 
-          case 7:
-            _context.next = 9;
+            accessTokenCreatedAt = Math.floor(new Date().getTime() / 1000);
+            cmd2 = "heroku config:set ACCESS_TOKEN_CREATED_AT=" + accessTokenCreatedAt;
+            child_process.exec(cmd2);
+
+          case 14:
+            _context.next = 16;
             return apiClient.fetchAllReviews(API_KEY, accessToken, {});
 
-          case 9:
+          case 16:
             data = _context.sent;
             res.status(200).send(data);
-            _context.next = 16;
+            _context.next = 23;
             break;
 
-          case 13:
-            _context.prev = 13;
+          case 20:
+            _context.prev = 20;
             _context.t0 = _context["catch"](0);
             next(_context.t0);
 
-          case 16:
+          case 23:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 13]]);
+    }, _callee, null, [[0, 20]]);
   }));
 
   return function (_x, _x2, _x3) {
