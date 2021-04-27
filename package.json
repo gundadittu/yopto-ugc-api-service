@@ -1,20 +1,33 @@
 {
-  "name": "node-js-getting-started",
+  "name": "real-reviews-yotpo-ugc-api-service",
   "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "description": "Deployed on-premise to access merchant's Yotpo data.",
   "engines": {
     "node": "14.x"
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "build": "babel ./src --out-dir dist",
+    "start": "node ./dist/index.js"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
   "dependencies": {
-    "ejs": "^3.1.5",
-    "express": "^4.15.2"
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "axios": "^0.21.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.15.2",
+    "nodemon": "^2.0.7",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.16",
     "got": "^11.3.0",
     "tape": "^4.7.0"
   },
