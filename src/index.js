@@ -24,7 +24,7 @@ var app = express();
 // TODO: handle yotpo access token expired error 
 // TODO: create ping endpoint that tests all necessary setup, env variables, and dependencies
 
-app.use('/', function(_1, _2, next) { 
+app.use('/', function(_req, _res, next) { 
   if (API_KEY == null || API_SECRET == null) { 
     let err = new Error("Missing API_KEY and/or API_SECRET"); // TODO: add env var values here
     next(err); 
@@ -35,10 +35,10 @@ app.use('/', function(_1, _2, next) {
   next(); 
 });
 
-app.get('/get-all-yotpo-reviews', async function(req, res, next){ 
+app.get('/get-all-yotpo-reviews', async function(_req, res, next){ 
   try { 
     var accessToken = ACCESS_TOKEN; 
-    // var accessTokenCreatedAt = ACCESS_TOKEN_CREATED_AT;
+    var accessTokenCreatedAt = ACCESS_TOKEN_CREATED_AT;
     
     // Check if access token has expired (older than 14 days)
     var two_weeks_ago_utc_ms = Math.floor(new Date(new Date().getTime() - (14 * 24 * 60 * 60 * 1000)).getTime() / 100);
@@ -66,7 +66,7 @@ app.get('/get-all-yotpo-reviews', async function(req, res, next){
   }
 });
 
-app.use(function(err, _, res) { 
+app.use(function(err, _req, res, _next) { 
   res.status(500).send(err.message); 
 });
 
