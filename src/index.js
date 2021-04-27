@@ -40,12 +40,13 @@ app.get('/get-all-yotpo-reviews', async function(_req, res, next){
     var accessToken = ACCESS_TOKEN; 
     var accessTokenCreatedAt = ACCESS_TOKEN_CREATED_AT;
     
+    // TODO: test accessTokenExpired
     // Check if access token has expired (older than 14 days)
     var two_weeks_ago_utc_ms = Math.floor(new Date(new Date().getTime() - (14 * 24 * 60 * 60 * 1000)).getTime() / 100);
     var accessTokenExpired = accessTokenCreatedAt ? two_weeks_ago_utc_ms >=  accessTokenCreatedAt : true; 
     
     // Create access token if invalid
-    if (ACCESS_TOKEN == null) { 
+    if (ACCESS_TOKEN == null || accessTokenExpired) { 
       accessToken = await apiClient.fetchAccessToken(API_KEY, API_SECRET);
       // TODO: test below line
 
