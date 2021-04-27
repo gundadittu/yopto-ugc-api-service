@@ -4,5 +4,15 @@
   "repository": "https://github.com/heroku/node-js-getting-started",
   "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
   "keywords": ["node", "express", "heroku"],
-  "image": "heroku/nodejs"
+  "image": "heroku/nodejs", 
+  "env": {
+    "API_KEY": {
+      "description": "Enter your Yotpo app key. More details on finding this are here: https://support.yotpo.com/en/article/finding-your-yotpo-app-key-and-api-secret",
+      "required": true
+    },
+    "API_SECRET": {
+      "description": "Enter your Yotpo secret key. More details on finding this are here: https://support.yotpo.com/en/article/finding-your-yotpo-app-key-and-api-secret",
+      "required": true
+    }
+  }
 }
